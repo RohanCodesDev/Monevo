@@ -16,6 +16,41 @@ import './SpendingBreakdown.css';
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
 
+// Distinct category color mapping for visual contrast
+const CATEGORY_COLORS = {
+  Food: '#E65100',          // Vibrant Terracotta / Deep Orange
+  Shopping: '#6A1B9A',      // Deep Purple / Violet
+  Transport: '#0277BD',     // Electric / Ocean Blue
+  Bills: '#C62828',         // Crimson Red
+  Entertainment: '#AD1457', // Magenta / Pink
+  Health: '#00695C',        // Deep Teal / Emerald
+  Education: '#283593',     // Indigo / Royal Navy
+  Travel: '#00838F',        // Cyan / Lagoon
+  Subscriptions: '#4E342E', // Warm Sienna / Bronze
+  Salary: '#2E7D32',        // Forest Green
+  Freelance: '#1565C0',     // Cobalt Blue
+  Business: '#37474F',      // Slate / Steel
+  Gift: '#D81B60',          // Cerise
+  Investment: '#00897B',    // Jade Green
+  Other: '#455A64',         // Neutral Graphite
+};
+
+// Fallback high-contrast qualitative palette
+const DISTINCT_PALETTE = [
+  '#E65100', // Terracotta
+  '#6A1B9A', // Royal Violet
+  '#0277BD', // Ocean Blue
+  '#2E7D32', // Forest Green
+  '#C62828', // Crimson Red
+  '#00838F', // Cyan Lagoon
+  '#AD1457', // Vivid Magenta
+  '#F57F17', // Golden Amber
+  '#283593', // Deep Indigo
+  '#4E342E', // Warm Bronze
+  '#00695C', // Deep Emerald
+  '#5D4037', // Roasted Umber
+];
+
 export const SpendingBreakdown = () => {
   const { metrics, theme } = useTransactions();
   const { expenses, categoryTotals } = metrics;
@@ -26,20 +61,20 @@ export const SpendingBreakdown = () => {
 
   const isDark = theme === 'dark';
 
-  // Strict charcoal and white architectural shades
-  const palette = isDark
-    ? ['#F5F4F0', '#D6D5CF', '#B2B1AA', '#8E8D88', '#6E6D68', '#4F4E4A', '#333330']
-    : ['#181816', '#3A3A36', '#585753', '#7A7973', '#9E9D97', '#C4C3BD', '#E0DFDA'];
+  // Build high-contrast, category-mapped colors
+  const chartColors = categories.map((cat, idx) => {
+    return CATEGORY_COLORS[cat] || DISTINCT_PALETTE[idx % DISTINCT_PALETTE.length];
+  });
 
   const doughnutData = {
     labels: categories,
     datasets: [
       {
         data: values,
-        backgroundColor: palette.slice(0, categories.length),
+        backgroundColor: chartColors,
         borderColor: isDark ? '#191918' : '#FAFAFA',
         borderWidth: 2,
-        hoverOffset: 4,
+        hoverOffset: 6,
       },
     ],
   };
@@ -55,15 +90,18 @@ export const SpendingBreakdown = () => {
       legend: {
         position: 'bottom',
         labels: {
-          color: isDark ? '#9E9D97' : '#585753',
-          font: { family: 'Outfit', size: 11 },
+          color: isDark ? '#DCDAD5' : '#181816',
+          font: { family: 'Outfit', size: 11, weight: '500' },
           boxWidth: 10,
-          padding: 10,
+          boxHeight: 10,
+          padding: 12,
+          usePointStyle: true,
+          pointStyle: 'circle',
         },
       },
       tooltip: {
         backgroundColor: isDark ? '#282826' : '#181816',
-        titleFont: { family: 'Outfit', size: 12 },
+        titleFont: { family: 'Outfit', size: 12, weight: '600' },
         bodyFont: { family: 'Outfit', size: 12 },
         padding: 10,
         cornerRadius: 6,
@@ -76,7 +114,7 @@ export const SpendingBreakdown = () => {
         },
       },
     },
-    cutout: '72%',
+    cutout: '68%',
   };
 
   const barData = {
@@ -85,9 +123,9 @@ export const SpendingBreakdown = () => {
       {
         label: 'Expenses',
         data: values,
-        backgroundColor: isDark ? '#F5F4F0' : '#181816',
+        backgroundColor: chartColors,
         borderRadius: 4,
-        maxBarThickness: 32,
+        maxBarThickness: 36,
       },
     ],
   };
@@ -103,7 +141,7 @@ export const SpendingBreakdown = () => {
       legend: { display: false },
       tooltip: {
         backgroundColor: isDark ? '#282826' : '#181816',
-        titleFont: { family: 'Outfit', size: 12 },
+        titleFont: { family: 'Outfit', size: 12, weight: '600' },
         bodyFont: { family: 'Outfit', size: 12 },
         padding: 10,
         cornerRadius: 6,
