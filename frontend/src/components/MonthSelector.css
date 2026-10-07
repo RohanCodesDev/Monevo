@@ -8,15 +8,16 @@
 .month-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .current-month-display {
-  font-size: 1.25rem;
+  font-size: 1.1875rem;
   font-weight: 600;
   color: var(--color-charcoal);
   min-width: 150px;
   text-align: center;
+  letter-spacing: -0.015em;
 }
 
 .month-btn-nav {
@@ -25,7 +26,7 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   background-color: var(--color-surface);
   color: var(--color-charcoal);
@@ -36,6 +37,11 @@
   background-color: var(--color-charcoal);
   color: var(--color-bg);
   border-color: var(--color-charcoal);
+  transform: translateY(-1px);
+}
+
+.month-btn-nav:active {
+  transform: translateY(0);
 }
 
 .month-btn-reset {
@@ -43,9 +49,9 @@
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
-  background-color: transparent;
+  background-color: var(--color-surface);
   color: var(--color-secondary);
   font-size: 0.8125rem;
   font-weight: 500;
@@ -53,7 +59,8 @@
 }
 
 .month-btn-reset:hover {
-  background-color: var(--color-surface);
-  color: var(--color-charcoal);
+  background-color: var(--color-charcoal);
+  color: var(--color-bg);
   border-color: var(--color-charcoal);
+  transform: translateY(-1px);
 }

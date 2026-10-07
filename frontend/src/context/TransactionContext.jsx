@@ -3,15 +3,65 @@ import { storage } from '../utils/storage.js';
 import { api } from '../services/api.js';
 
 const TransactionContext = createContext(null);
+const BUDGETS_STORAGE_KEY = 'monevo_category_budgets';
+const THEME_STORAGE_KEY = 'monevo_theme';
+const TOKEN_KEY = 'monevo_auth_token';
+const USER_KEY = 'monevo_auth_user';
 
 export const TransactionProvider = ({ children }) => {
   const [transactions, setTransactions] = useState([]);
-  const [currentDate, setCurrentDate] = useState(new Date()); // Selected month anchor
-  const [syncStatus, setSyncStatus] = useState('saved-locally'); // 'saved-locally' | 'syncing' | 'synced' | 'offline'
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [syncStatus, setSyncStatus] = useState('saved-locally');
   const [isLoading, setIsLoading] = useState(true);
   const [toasts, setToasts] = useState([]);
 
-  // Toast notification helper
+  // Auth state
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem(USER_KEY);
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  // Theme state: 'light' | 'dark'
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem(THEME_STORAGE_KEY) || 'light';
+  });
+
+  // Category Budgets
+  const [budgets, setBudgets] = useState(() => {
+    try {
+      const data = localStorage.getItem(BUDGETS_STORAGE_KEY);
+      return data ? JSON.parse(data) : {
+        Food: 10000,
+        Shopping: 8000,
+        Bills: 5000,
+        Entertainment: 4000,
+      };
+    } catch {
+      return {};
+    }
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+  }, [theme]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  }, []);
+
+  const setCategoryBudget = useCallback((category, limit) => {
+    setBudgets((prev) => {
+      const updated = { ...prev, [category]: parseFloat(limit) || 0 };
+      localStorage.setItem(BUDGETS_STORAGE_KEY, JSON.stringify(updated));
+      return updated;
+    });
+  }, []);
+
   const addToast = useCallback((message, type = 'info') => {
     const id = Date.now() + Math.random().toString();
     setToasts((prev) => [...prev, { id, message, type }]);
@@ -24,48 +74,82 @@ export const TransactionProvider = ({ children }) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  // Initial load: LocalStorage first, then attempt backend fetch & sync
-  useEffect(() => {
-    const localData = storage.getTransactions();
-    setTransactions(localData);
-    setIsLoading(false);
+  // Sync / fetch transactions
+  const loadTransactions = useCallback(async (isUserChange = false) => {
+    // When switching user or logging out, do not show previous user's localstorage
+    if (isUserChange) {
+      setTransactions([]);
+    } else {
+      const localData = storage.getTransactions();
+      setTransactions(localData);
+    }
+    
+    setIsLoading(true);
 
-    const syncWithBackend = async () => {
-      try {
-        setSyncStatus('syncing');
-        const res = await api.getTransactions();
-        if (res && res.success && Array.isArray(res.data)) {
-          // If backend has data, use backend as authoritative, but merge any unsynced local-only items if needed
-          if (res.data.length > 0) {
-            setTransactions(res.data);
-            storage.saveTransactions(res.data);
-          } else if (localData.length > 0) {
-            // Backend is empty, push local transactions to backend
-            for (const item of localData) {
-              try {
-                await api.createTransaction({
-                  type: item.type,
-                  amount: item.amount,
-                  category: item.category,
-                  description: item.description,
-                  date: item.date,
-                });
-              } catch (err) {
-                console.warn('Could not sync local item:', item.id);
-              }
-            }
-          }
-          setSyncStatus('synced');
-        } else {
-          setSyncStatus('saved-locally');
-        }
-      } catch (err) {
-        setSyncStatus('offline');
+    try {
+      setSyncStatus('syncing');
+      const res = await api.getTransactions();
+      if (res && res.success && Array.isArray(res.data)) {
+        setTransactions(res.data);
+        storage.saveTransactions(res.data);
+        setSyncStatus('synced');
+      } else {
+        setSyncStatus('saved-locally');
       }
-    };
-
-    syncWithBackend();
+    } catch (err) {
+      setSyncStatus('offline');
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    loadTransactions(true);
+  }, [currentUser]);
+
+  // Auth actions
+  const loginUser = useCallback(async (email, password) => {
+    try {
+      const res = await api.login(email, password);
+      if (res && res.success && res.data) {
+        localStorage.setItem(TOKEN_KEY, res.data.token);
+        localStorage.setItem(USER_KEY, JSON.stringify(res.data.user));
+        storage.clearTransactions(); // Clear previous session's storage
+        setCurrentUser(res.data.user);
+        addToast(`Welcome back, ${res.data.user.name}!`, 'success');
+        return { success: true };
+      }
+      return { success: false, message: res.message || 'Login failed' };
+    } catch (err) {
+      return { success: false, message: err.message || 'Login error' };
+    }
+  }, [addToast]);
+
+  const registerUser = useCallback(async (name, email, password) => {
+    try {
+      const res = await api.register(name, email, password);
+      if (res && res.success && res.data) {
+        localStorage.setItem(TOKEN_KEY, res.data.token);
+        localStorage.setItem(USER_KEY, JSON.stringify(res.data.user));
+        storage.clearTransactions(); // Clear previous session's storage
+        setCurrentUser(res.data.user);
+        addToast(`Account created! Welcome, ${res.data.user.name}!`, 'success');
+        return { success: true };
+      }
+      return { success: false, message: res.message || 'Registration failed' };
+    } catch (err) {
+      return { success: false, message: err.message || 'Registration error' };
+    }
+  }, [addToast]);
+
+  const logoutUser = useCallback(() => {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
+    storage.clearTransactions(); // Wipe user transaction history from local storage immediately
+    setCurrentUser(null);
+    setTransactions([]); // Clear active view state immediately
+    addToast('Logged out. Session cleared.', 'info');
+  }, [addToast]);
 
   // CRUD: Add Transaction
   const addTransaction = useCallback(async (data) => {
@@ -77,7 +161,6 @@ export const TransactionProvider = ({ children }) => {
       createdAt: new Date().toISOString(),
     };
 
-    // 1. Optimistic update in UI and LocalStorage
     setTransactions((prev) => {
       const updated = [newTx, ...prev];
       storage.saveTransactions(updated);
@@ -86,12 +169,10 @@ export const TransactionProvider = ({ children }) => {
     setSyncStatus('saved-locally');
     addToast('Transaction recorded', 'success');
 
-    // 2. Sync to Backend
     try {
       setSyncStatus('syncing');
       const res = await api.createTransaction(data);
       if (res && res.success && res.data) {
-        // Reconcile temp ID with permanent DB ID
         setTransactions((prev) => {
           const reconciled = prev.map((item) =>
             item.id === tempId ? res.data : item
@@ -109,7 +190,6 @@ export const TransactionProvider = ({ children }) => {
 
   // CRUD: Update Transaction
   const updateTransaction = useCallback(async (id, data) => {
-    // 1. Optimistic update
     setTransactions((prev) => {
       const updated = prev.map((item) =>
         item.id === id ? { ...item, ...data, amount: parseFloat(data.amount) } : item
@@ -119,7 +199,6 @@ export const TransactionProvider = ({ children }) => {
     });
     addToast('Transaction updated', 'success');
 
-    // 2. Backend update if not a local-only temporary ID
     if (!id.startsWith('local-')) {
       try {
         setSyncStatus('syncing');
@@ -141,7 +220,6 @@ export const TransactionProvider = ({ children }) => {
 
   // CRUD: Delete Transaction
   const deleteTransaction = useCallback(async (id) => {
-    // 1. Optimistic delete
     setTransactions((prev) => {
       const updated = prev.filter((item) => item.id !== id);
       storage.saveTransactions(updated);
@@ -149,7 +227,6 @@ export const TransactionProvider = ({ children }) => {
     });
     addToast('Transaction removed', 'info');
 
-    // 2. Backend delete
     if (!id.startsWith('local-')) {
       try {
         setSyncStatus('syncing');
@@ -162,7 +239,6 @@ export const TransactionProvider = ({ children }) => {
     }
   }, [addToast]);
 
-  // Month navigation
   const nextMonth = useCallback(() => {
     setCurrentDate((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
   }, []);
@@ -175,7 +251,6 @@ export const TransactionProvider = ({ children }) => {
     setCurrentDate(new Date(year, monthIndex, 1));
   }, []);
 
-  // Filtered transactions for selected month
   const monthlyTransactions = useMemo(() => {
     const selYear = currentDate.getFullYear();
     const selMonth = currentDate.getMonth();
@@ -187,7 +262,6 @@ export const TransactionProvider = ({ children }) => {
     });
   }, [transactions, currentDate]);
 
-  // Financial calculations for selected month
   const metrics = useMemo(() => {
     let income = 0;
     let expenses = 0;
@@ -222,6 +296,14 @@ export const TransactionProvider = ({ children }) => {
     syncStatus,
     isLoading,
     toasts,
+    theme,
+    toggleTheme,
+    budgets,
+    setCategoryBudget,
+    currentUser,
+    loginUser,
+    registerUser,
+    logoutUser,
     addTransaction,
     updateTransaction,
     deleteTransaction,

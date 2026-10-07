@@ -2,16 +2,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 16px;
+  padding: 14px 18px;
   background-color: var(--color-surface);
-  border: 1px solid var(--color-border-subtle);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
 }
 
 .transaction-row:hover {
-  border-color: var(--color-border);
+  border-color: var(--color-charcoal);
   background-color: var(--color-surface-hover);
+  transform: translateX(2px);
 }
 
 .transaction-left {
@@ -24,22 +25,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-md);
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+  color: var(--color-charcoal);
+  transition: all var(--transition-fast);
 }
 
-.tx-icon-badge.income {
-  background-color: var(--color-income-subtle);
-  color: var(--color-income);
-  border-color: rgba(42, 111, 78, 0.2);
-}
-
-.tx-icon-badge.expense {
-  background-color: var(--color-expense-subtle);
-  color: var(--color-expense);
-  border-color: rgba(164, 57, 57, 0.2);
+.transaction-row:hover .tx-icon-badge {
+  background-color: var(--color-charcoal);
+  color: var(--color-bg);
+  border-color: var(--color-charcoal);
 }
 
 .tx-details {
@@ -87,23 +85,25 @@
 }
 
 .amount-income {
-  color: var(--color-income);
+  color: var(--color-charcoal);
 }
 
 .amount-expense {
-  color: var(--color-charcoal);
+  color: var(--color-secondary);
 }
 
 .tx-actions {
   display: flex;
   align-items: center;
   gap: 4px;
-  opacity: 0.6;
-  transition: opacity var(--transition-fast);
+  opacity: 0;
+  transform: translateX(4px);
+  transition: all var(--transition-fast);
 }
 
 .transaction-row:hover .tx-actions {
   opacity: 1;
+  transform: translateX(0);
 }
 
 .tx-btn-action {
@@ -114,22 +114,21 @@
   height: 28px;
   border-radius: var(--radius-sm);
   color: var(--color-secondary);
+  border: 1px solid transparent;
   transition: all var(--transition-fast);
 }
 
 .tx-btn-action:hover {
-  background-color: var(--color-border);
+  background-color: var(--color-bg);
+  border-color: var(--color-border);
   color: var(--color-charcoal);
-}
-
-.tx-btn-action.tx-btn-delete:hover {
-  background-color: var(--color-expense-subtle);
-  color: var(--color-expense);
+  transform: scale(1.05);
 }
 
 @media (max-width: 640px) {
   .tx-actions {
-    opacity: 1; /* Always visible on mobile */
+    opacity: 1;
+    transform: none;
   }
 
   .transaction-right {

@@ -2,10 +2,16 @@
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 22px 24px;
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.insight-card:hover {
+  border-color: var(--color-charcoal);
+  box-shadow: var(--shadow-md);
 }
 
 .insight-card-header {
@@ -16,14 +22,17 @@
 }
 
 .insight-card-title {
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
   font-weight: 600;
   color: var(--color-charcoal);
+  letter-spacing: -0.015em;
 }
 
 .insight-card-badge {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--color-secondary);
   background-color: var(--color-bg);
   padding: 3px 8px;
@@ -32,10 +41,10 @@
 }
 
 .insight-empty {
-  padding: 32px 0;
+  padding: 36px 0;
   text-align: center;
   color: var(--color-muted);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
 }
 
 .overview-content {
@@ -52,7 +61,7 @@
 
 .ratio-bar {
   display: flex;
-  height: 10px;
+  height: 8px;
   width: 100%;
   border-radius: var(--radius-full);
   overflow: hidden;
@@ -61,15 +70,15 @@
 
 .ratio-segment {
   height: 100%;
-  transition: width var(--transition-base);
+  transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .segment-income {
-  background-color: var(--color-income);
+  background-color: var(--color-charcoal);
 }
 
 .segment-expense {
-  background-color: var(--color-expense);
+  background-color: var(--color-muted);
 }
 
 .ratio-labels {
@@ -80,11 +89,11 @@
 }
 
 .ratio-label-income {
-  color: var(--color-income);
+  color: var(--color-charcoal);
 }
 
 .ratio-label-expense {
-  color: var(--color-expense);
+  color: var(--color-secondary);
 }
 
 .metric-bars-list {
@@ -102,7 +111,7 @@
 .metric-bar-meta {
   display: flex;
   justify-content: space-between;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
 }
 
 .metric-name {
@@ -115,11 +124,11 @@
 }
 
 .text-income {
-  color: var(--color-income);
+  color: var(--color-charcoal);
 }
 
 .text-expense {
-  color: var(--color-expense);
+  color: var(--color-secondary);
 }
 
 .metric-track {
@@ -134,15 +143,15 @@
 .metric-fill {
   height: 100%;
   border-radius: var(--radius-full);
-  transition: width var(--transition-base);
+  transition: width 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .fill-income {
-  background-color: var(--color-income);
+  background-color: var(--color-charcoal);
 }
 
 .fill-expense {
-  background-color: var(--color-expense);
+  background-color: var(--color-secondary);
 }
 
 .savings-rate-summary {
@@ -161,12 +170,5 @@
 .savings-rate-val {
   font-size: 0.875rem;
   font-weight: 600;
-}
-
-.savings-rate-val.positive {
-  color: var(--color-income);
-}
-
-.savings-rate-val.negative {
-  color: var(--color-expense);
+  color: var(--color-charcoal);
 }

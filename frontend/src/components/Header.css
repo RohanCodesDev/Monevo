@@ -2,10 +2,10 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background-color: rgba(247, 245, 240, 0.92);
-  backdrop-filter: blur(8px);
+  background-color: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
   padding: 0 24px;
+  transition: background-color var(--transition-base), border-color var(--transition-base);
 }
 
 .header-inner {
@@ -63,7 +63,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background-color: rgba(222, 220, 214, 0.4);
+  background-color: var(--color-border-subtle);
   padding: 4px;
   border-radius: var(--radius-full);
 }
@@ -90,7 +90,77 @@
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+}
+
+/* Auth user badge / login button */
+.user-profile-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-charcoal);
+}
+
+.user-name-label {
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-logout {
+  color: var(--color-secondary);
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  transition: color var(--transition-fast);
+}
+
+.btn-logout:hover {
+  color: var(--color-expense);
+}
+
+.btn-login-open {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background-color: var(--color-surface);
+  color: var(--color-charcoal);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.btn-login-open:hover {
+  border-color: var(--color-charcoal);
+}
+
+/* Theme toggle */
+.btn-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-charcoal);
+  transition: all var(--transition-fast);
+}
+
+.btn-theme-toggle:hover {
+  border-color: var(--color-charcoal);
+  transform: translateY(-1px);
 }
 
 /* Sync indicator */
@@ -156,7 +226,7 @@
 }
 
 .btn-add-transaction:hover {
-  background-color: #333330;
+  opacity: 0.9;
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
@@ -182,6 +252,6 @@
     padding: 0 16px;
   }
   .header-nav {
-    display: none; /* Mobile navigation is handled in bottom bar */
+    display: none;
   }
 }

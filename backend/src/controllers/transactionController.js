@@ -6,6 +6,14 @@ export const getTransactions = async (req, res, next) => {
     const { month, year, type, category } = req.query;
     const where = {};
 
+    // Strict user isolation: If user is logged in, return only their transactions.
+    // If not logged in (anonymous/guest session), return only records with NO assigned user account.
+    if (req.user) {
+      where.userId = req.user.id;
+    } else {
+      where.userId = null;
+    }
+
     if (type) {
       where.type = type.toLowerCase();
     }
@@ -16,7 +24,7 @@ export const getTransactions = async (req, res, next) => {
 
     if (year && month) {
       const parsedYear = parseInt(year, 10);
-      const parsedMonth = parseInt(month, 10); // 1-12
+      const parsedMonth = parseInt(month, 10);
       const startDate = new Date(Date.UTC(parsedYear, parsedMonth - 1, 1));
       const endDate = new Date(Date.UTC(parsedYear, parsedMonth, 0, 23, 59, 59, 999));
       where.date = {
@@ -47,8 +55,15 @@ export const getTransactions = async (req, res, next) => {
 export const getTransactionById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const transaction = await prisma.transaction.findUnique({
-      where: { id },
+    const where = { id };
+    if (req.user) {
+      where.userId = req.user.id;
+    } else {
+      where.userId = null;
+    }
+
+    const transaction = await prisma.transaction.findFirst({
+      where,
     });
 
     if (!transaction) {
@@ -82,14 +97,20 @@ export const createTransaction = async (req, res, next) => {
       return errorResponse(res, 'Valid date is required', 400);
     }
 
+    const data = {
+      type: type.toLowerCase(),
+      amount: numAmount,
+      category: category.trim(),
+      description: description ? description.trim() : null,
+      date: new Date(date),
+    };
+
+    if (req.user) {
+      data.userId = req.user.id;
+    }
+
     const transaction = await prisma.transaction.create({
-      data: {
-        type: type.toLowerCase(),
-        amount: numAmount,
-        category: category.trim(),
-        description: description ? description.trim() : null,
-        date: new Date(date),
-      },
+      data,
     });
 
     return successResponse(res, transaction, 201);
@@ -102,6 +123,23 @@ export const updateTransaction = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { type, amount, category, description, date } = req.body;
+
+    // Check ownership if user is authenticated
+    if (req.user) {
+      const existing = await prisma.transaction.findFirst({
+        where: { id, userId: req.user.id },
+      });
+      if (!existing) {
+        return errorResponse(res, 'Transaction not found or unauthorized', 404);
+      }
+    } else {
+      const existing = await prisma.transaction.findFirst({
+        where: { id, userId: null },
+      });
+      if (!existing) {
+        return errorResponse(res, 'Transaction not found or unauthorized', 404);
+      }
+    }
 
     const dataToUpdate = {};
 
@@ -152,6 +190,23 @@ export const updateTransaction = async (req, res, next) => {
 export const deleteTransaction = async (req, res, next) => {
   try {
     const { id } = req.params;
+
+    if (req.user) {
+      const existing = await prisma.transaction.findFirst({
+        where: { id, userId: req.user.id },
+      });
+      if (!existing) {
+        return errorResponse(res, 'Transaction not found or unauthorized', 404);
+      }
+    } else {
+      const existing = await prisma.transaction.findFirst({
+        where: { id, userId: null },
+      });
+      if (!existing) {
+        return errorResponse(res, 'Transaction not found or unauthorized', 404);
+      }
+    }
+
     await prisma.transaction.delete({
       where: { id },
     });

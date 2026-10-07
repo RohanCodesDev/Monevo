@@ -4,7 +4,8 @@ import { useTransactions } from '../context/TransactionContext.jsx';
 import { TransactionItem } from '../components/TransactionItem.jsx';
 import { EmptyState } from '../components/EmptyState.jsx';
 import { formatCurrency, formatMonthYear } from '../utils/formatters.js';
-import { Search, Filter, Plus, Calendar, ArrowUpDown } from 'lucide-react';
+import { exportToCSV } from '../utils/export.js';
+import { Search, Plus, Calendar, ArrowUpDown, Download } from 'lucide-react';
 import './Transactions.css';
 
 export const Transactions = () => {
@@ -73,6 +74,13 @@ export const Transactions = () => {
     return { totalIn, totalOut };
   }, [filteredList]);
 
+  const handleExport = () => {
+    const monthTag = useMonthFilter
+      ? formatMonthYear(currentDate).toLowerCase().replace(' ', '-')
+      : 'all-time';
+    exportToCSV(filteredList, `monevo-${monthTag}-export.csv`);
+  };
+
   return (
     <div className="transactions-page">
       {/* Page Header */}
@@ -86,14 +94,26 @@ export const Transactions = () => {
           </p>
         </div>
 
-        <button
-          type="button"
-          className="btn-add-primary"
-          onClick={onOpenAddModal}
-        >
-          <Plus size={16} strokeWidth={2.5} />
-          <span>Add Transaction</span>
-        </button>
+        <div className="tx-header-actions">
+          <button
+            type="button"
+            className="btn-export"
+            onClick={handleExport}
+            title="Export transactions to CSV for Excel / tax reporting"
+          >
+            <Download size={15} />
+            <span>Export CSV</span>
+          </button>
+
+          <button
+            type="button"
+            className="btn-add-primary"
+            onClick={onOpenAddModal}
+          >
+            <Plus size={16} strokeWidth={2.5} />
+            <span>Add Transaction</span>
+          </button>
+        </div>
       </div>
 
       {/* Filter and Search Bar */}

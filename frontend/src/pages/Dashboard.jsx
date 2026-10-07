@@ -4,6 +4,7 @@ import { MonthSelector } from '../components/MonthSelector.jsx';
 import { SummaryCards } from '../components/SummaryCards.jsx';
 import { MonthlyOverview } from '../components/MonthlyOverview.jsx';
 import { SpendingBreakdown } from '../components/SpendingBreakdown.jsx';
+import { CategoryBudgets } from '../components/CategoryBudgets.jsx';
 import { RecentTransactions } from '../components/RecentTransactions.jsx';
 import './Dashboard.css';
 
@@ -20,6 +21,8 @@ export const Dashboard = () => {
         <MonthlyOverview />
         <SpendingBreakdown />
       </div>
+
+      <CategoryBudgets />
 
       <RecentTransactions
         onEdit={onOpenEditModal}
