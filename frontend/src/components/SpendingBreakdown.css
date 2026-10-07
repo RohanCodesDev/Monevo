@@ -14,18 +14,19 @@
 .chart-type-toggles {
   display: flex;
   background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--radius-sm);
   padding: 2px;
+  gap: 2px;
 }
 
 .btn-chart-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-full);
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-xs);
   color: var(--color-secondary);
   transition: all var(--transition-fast);
 }
@@ -33,6 +34,7 @@
 .btn-chart-toggle.active {
   background-color: var(--color-surface);
   color: var(--color-charcoal);
+  border: 1px solid var(--color-border);
   box-shadow: var(--shadow-sm);
 }
 
