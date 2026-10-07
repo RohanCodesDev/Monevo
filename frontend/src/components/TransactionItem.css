@@ -1,0 +1,138 @@
+.transaction-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.transaction-row:hover {
+  border-color: var(--color-border);
+  background-color: var(--color-surface-hover);
+}
+
+.transaction-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.tx-icon-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.tx-icon-badge.income {
+  background-color: var(--color-income-subtle);
+  color: var(--color-income);
+  border-color: rgba(42, 111, 78, 0.2);
+}
+
+.tx-icon-badge.expense {
+  background-color: var(--color-expense-subtle);
+  color: var(--color-expense);
+  border-color: rgba(164, 57, 57, 0.2);
+}
+
+.tx-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tx-title {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-charcoal);
+}
+
+.tx-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--color-secondary);
+}
+
+.tx-category-badge {
+  color: var(--color-secondary);
+}
+
+.tx-separator {
+  color: var(--color-muted);
+}
+
+.tx-date {
+  color: var(--color-muted);
+}
+
+.transaction-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.tx-amount {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.amount-income {
+  color: var(--color-income);
+}
+
+.amount-expense {
+  color: var(--color-charcoal);
+}
+
+.tx-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+}
+
+.transaction-row:hover .tx-actions {
+  opacity: 1;
+}
+
+.tx-btn-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  color: var(--color-secondary);
+  transition: all var(--transition-fast);
+}
+
+.tx-btn-action:hover {
+  background-color: var(--color-border);
+  color: var(--color-charcoal);
+}
+
+.tx-btn-action.tx-btn-delete:hover {
+  background-color: var(--color-expense-subtle);
+  color: var(--color-expense);
+}
+
+@media (max-width: 640px) {
+  .tx-actions {
+    opacity: 1; /* Always visible on mobile */
+  }
+
+  .transaction-right {
+    gap: 8px;
+  }
+}

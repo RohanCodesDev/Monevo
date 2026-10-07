@@ -1,0 +1,187 @@
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background-color: rgba(247, 245, 240, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0 24px;
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.header-brand-group {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--color-charcoal);
+  text-decoration: none;
+}
+
+.logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background-color: var(--color-charcoal);
+  color: var(--color-bg);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.logo-text {
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+}
+
+.logo-tagline {
+  font-size: 0.8125rem;
+  color: var(--color-secondary);
+  font-weight: 400;
+  display: inline-block;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: rgba(222, 220, 214, 0.4);
+  padding: 4px;
+  border-radius: var(--radius-full);
+}
+
+.nav-link {
+  padding: 6px 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-secondary);
+  border-radius: var(--radius-full);
+  transition: all var(--transition-fast);
+}
+
+.nav-link:hover {
+  color: var(--color-charcoal);
+}
+
+.nav-link.active {
+  background-color: var(--color-surface);
+  color: var(--color-charcoal);
+  box-shadow: var(--shadow-sm);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Sync indicator */
+.sync-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+
+.sync-indicator.sync-synced {
+  color: var(--color-income);
+  border-color: rgba(42, 111, 78, 0.2);
+}
+
+.sync-indicator.sync-syncing {
+  color: var(--color-secondary);
+}
+
+.sync-indicator.sync-saved-locally {
+  color: var(--color-secondary);
+}
+
+.sync-indicator.sync-offline {
+  color: var(--color-warning);
+  border-color: rgba(176, 125, 43, 0.2);
+}
+
+.sync-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-secondary);
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Primary Add Button */
+.btn-add-transaction {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--color-charcoal);
+  color: var(--color-bg);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-add-transaction:hover {
+  background-color: #333330;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-add-transaction:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .logo-tagline {
+    display: none;
+  }
+  .sync-label {
+    display: none;
+  }
+  .sync-indicator {
+    padding: 4px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-header {
+    padding: 0 16px;
+  }
+  .header-nav {
+    display: none; /* Mobile navigation is handled in bottom bar */
+  }
+}

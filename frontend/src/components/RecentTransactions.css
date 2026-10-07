@@ -1,0 +1,49 @@
+.recent-transactions-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-charcoal);
+}
+
+.section-subtitle {
+  font-size: 0.8125rem;
+  color: var(--color-secondary);
+  margin-top: 2px;
+}
+
+.link-view-all {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-charcoal);
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  transition: all var(--transition-fast);
+}
+
+.link-view-all:hover {
+  background-color: var(--color-charcoal);
+  color: var(--color-bg);
+  border-color: var(--color-charcoal);
+}
+
+.transactions-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

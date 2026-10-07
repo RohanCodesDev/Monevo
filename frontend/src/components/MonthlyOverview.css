@@ -1,0 +1,172 @@
+.insight-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+}
+
+.insight-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.insight-card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-charcoal);
+}
+
+.insight-card-badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-secondary);
+  background-color: var(--color-bg);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+}
+
+.insight-empty {
+  padding: 32px 0;
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+}
+
+.overview-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ratio-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ratio-bar {
+  display: flex;
+  height: 10px;
+  width: 100%;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background-color: var(--color-border-subtle);
+}
+
+.ratio-segment {
+  height: 100%;
+  transition: width var(--transition-base);
+}
+
+.segment-income {
+  background-color: var(--color-income);
+}
+
+.segment-expense {
+  background-color: var(--color-expense);
+}
+
+.ratio-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.ratio-label-income {
+  color: var(--color-income);
+}
+
+.ratio-label-expense {
+  color: var(--color-expense);
+}
+
+.metric-bars-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.metric-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metric-bar-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+}
+
+.metric-name {
+  color: var(--color-secondary);
+  font-weight: 500;
+}
+
+.metric-val {
+  font-weight: 600;
+}
+
+.text-income {
+  color: var(--color-income);
+}
+
+.text-expense {
+  color: var(--color-expense);
+}
+
+.metric-track {
+  width: 100%;
+  height: 6px;
+  background-color: var(--color-bg);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid var(--color-border-subtle);
+}
+
+.metric-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width var(--transition-base);
+}
+
+.fill-income {
+  background-color: var(--color-income);
+}
+
+.fill-expense {
+  background-color: var(--color-expense);
+}
+
+.savings-rate-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.savings-rate-label {
+  font-size: 0.8125rem;
+  color: var(--color-secondary);
+}
+
+.savings-rate-val {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.savings-rate-val.positive {
+  color: var(--color-income);
+}
+
+.savings-rate-val.negative {
+  color: var(--color-expense);
+}

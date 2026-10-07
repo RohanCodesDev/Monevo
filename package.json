@@ -1,0 +1,11 @@
+{
+  "name": "monevo-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Monevo — Your Money, In Motion. Minimalist expense tracker workspace",
+  "scripts": {
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "build:frontend": "npm --prefix frontend run build"
+  }
+}
