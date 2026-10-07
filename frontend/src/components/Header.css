@@ -11,7 +11,7 @@
 .header-inner {
   max-width: 1200px;
   margin: 0 auto;
-  height: 64px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -39,42 +39,45 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   background-color: var(--color-charcoal);
   color: var(--color-bg);
-  border-radius: var(--radius-sm);
-  font-size: 0.8rem;
+  border-radius: var(--radius-xs);
+  font-size: 0.75rem;
   font-weight: 700;
 }
 
 .logo-text {
-  font-size: 1.1rem;
-  letter-spacing: 0.06em;
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
 }
 
 .logo-tagline {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--color-secondary);
   font-weight: 400;
   display: inline-block;
+  letter-spacing: 0.01em;
 }
 
+/* Nav segment */
 .header-nav {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   background-color: var(--color-border-subtle);
-  padding: 3px;
-  border-radius: var(--radius-full);
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
 }
 
 .nav-link {
-  padding: 5px 14px;
+  padding: 4px 12px;
   font-size: 0.8125rem;
   font-weight: 500;
   color: var(--color-secondary);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-xs);
   transition: all var(--transition-fast);
 }
 
@@ -103,11 +106,11 @@
   padding: 4px 10px;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-sm);
   font-size: 0.8125rem;
   font-weight: 500;
   color: var(--color-charcoal);
-  max-width: 130px;
+  max-width: 140px;
 }
 
 .user-name-label {
@@ -121,11 +124,13 @@
   display: flex;
   align-items: center;
   padding: 2px;
-  transition: color var(--transition-fast);
+  border-radius: var(--radius-xs);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
 }
 
 .btn-logout:hover {
   color: var(--color-charcoal);
+  background-color: var(--color-border-subtle);
 }
 
 /* Login button */
@@ -133,11 +138,12 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 12px;
+  padding: 0 12px;
+  height: var(--btn-height-sm);
   background-color: var(--color-surface);
   color: var(--color-charcoal);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-sm);
   font-size: 0.8125rem;
   font-weight: 500;
   white-space: nowrap;
@@ -146,6 +152,11 @@
 
 .btn-login-open:hover {
   border-color: var(--color-charcoal);
+  background-color: var(--color-surface-hover);
+}
+
+.btn-login-open:active {
+  background-color: var(--color-surface-active);
 }
 
 /* Theme toggle */
@@ -153,10 +164,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: var(--btn-height-sm);
+  height: var(--btn-height-sm);
   flex-shrink: 0;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   background-color: var(--color-surface);
   color: var(--color-charcoal);
@@ -165,6 +176,7 @@
 
 .btn-theme-toggle:hover {
   border-color: var(--color-charcoal);
+  background-color: var(--color-surface-hover);
 }
 
 /* Sync indicator */
@@ -174,8 +186,9 @@
   gap: 5px;
   font-size: 0.75rem;
   font-weight: 500;
-  padding: 4px 9px;
-  border-radius: var(--radius-full);
+  padding: 0 8px;
+  height: var(--btn-height-sm);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   background-color: var(--color-surface);
   white-space: nowrap;
@@ -184,7 +197,7 @@
 .sync-dot {
   width: 5px;
   height: 5px;
-  border-radius: 50%;
+  border-radius: var(--radius-xs);
   background-color: var(--color-charcoal);
 }
 
@@ -201,19 +214,26 @@
 .btn-add-transaction {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   background-color: var(--color-charcoal);
   color: var(--color-bg);
-  padding: 7px 14px;
-  border-radius: var(--radius-full);
+  padding: 0 14px;
+  height: var(--btn-height-sm);
+  border-radius: var(--radius-sm);
   font-size: 0.8125rem;
-  font-weight: 600;
+  font-weight: 500;
   white-space: nowrap;
+  border: 1px solid var(--color-charcoal);
   transition: all var(--transition-fast);
 }
 
 .btn-add-transaction:hover {
-  opacity: 0.88;
+  background-color: #2D2D29;
+  border-color: #2D2D29;
+}
+
+.btn-add-transaction:active {
+  transform: scale(0.98);
 }
 
 /* Tablet & Mobile Responsiveness */
@@ -229,35 +249,29 @@
   }
 
   .header-inner {
-    height: 56px;
+    height: 54px;
     gap: 8px;
   }
 
   .header-nav {
-    display: none; /* Managed by bottom navigation */
+    display: none;
   }
 
-  /* On mobile, hide the desktop add button since the bottom floating action bar handles it */
   .btn-add-transaction {
     display: none;
   }
 
-  /* Keep status compact */
   .sync-label {
     display: none;
   }
 
   .sync-indicator {
-    padding: 6px;
+    padding: 0 6px;
   }
 
   .btn-login-open {
-    padding: 5px 10px;
+    padding: 0 8px;
     font-size: 0.75rem;
-  }
-
-  .btn-login-open span {
-    display: inline;
   }
 
   .header-actions {
@@ -265,8 +279,8 @@
   }
 
   .user-profile-badge {
-    max-width: 90px;
-    padding: 3px 8px;
+    max-width: 100px;
+    padding: 2px 6px;
     font-size: 0.75rem;
   }
 }
