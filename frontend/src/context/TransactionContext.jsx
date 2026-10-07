@@ -76,7 +76,6 @@ export const TransactionProvider = ({ children }) => {
 
   // Sync / fetch transactions
   const loadTransactions = useCallback(async (isUserChange = false) => {
-    // When switching user or logging out, do not show previous user's localstorage
     if (isUserChange) {
       setTransactions([]);
     } else {
@@ -114,7 +113,7 @@ export const TransactionProvider = ({ children }) => {
       if (res && res.success && res.data) {
         localStorage.setItem(TOKEN_KEY, res.data.token);
         localStorage.setItem(USER_KEY, JSON.stringify(res.data.user));
-        storage.clearTransactions(); // Clear previous session's storage
+        storage.clearTransactions();
         setCurrentUser(res.data.user);
         addToast(`Welcome back, ${res.data.user.name}!`, 'success');
         return { success: true };
@@ -131,7 +130,7 @@ export const TransactionProvider = ({ children }) => {
       if (res && res.success && res.data) {
         localStorage.setItem(TOKEN_KEY, res.data.token);
         localStorage.setItem(USER_KEY, JSON.stringify(res.data.user));
-        storage.clearTransactions(); // Clear previous session's storage
+        storage.clearTransactions();
         setCurrentUser(res.data.user);
         addToast(`Account created! Welcome, ${res.data.user.name}!`, 'success');
         return { success: true };
@@ -145,9 +144,9 @@ export const TransactionProvider = ({ children }) => {
   const logoutUser = useCallback(() => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
-    storage.clearTransactions(); // Wipe user transaction history from local storage immediately
+    storage.clearTransactions();
     setCurrentUser(null);
-    setTransactions([]); // Clear active view state immediately
+    setTransactions([]);
     addToast('Logged out. Session cleared.', 'info');
   }, [addToast]);
 
@@ -251,6 +250,7 @@ export const TransactionProvider = ({ children }) => {
     setCurrentDate(new Date(year, monthIndex, 1));
   }, []);
 
+  // Filtered transactions for selected month
   const monthlyTransactions = useMemo(() => {
     const selYear = currentDate.getFullYear();
     const selMonth = currentDate.getMonth();
@@ -262,6 +262,7 @@ export const TransactionProvider = ({ children }) => {
     });
   }, [transactions, currentDate]);
 
+  // Financial calculations for selected month and previous month comparison
   const metrics = useMemo(() => {
     let income = 0;
     let expenses = 0;
@@ -280,13 +281,42 @@ export const TransactionProvider = ({ children }) => {
 
     const balance = income - expenses;
 
+    // Previous month comparison
+    const prevYear = currentDate.getMonth() === 0 ? currentDate.getFullYear() - 1 : currentDate.getFullYear();
+    const prevMonthIdx = currentDate.getMonth() === 0 ? 11 : currentDate.getMonth() - 1;
+
+    let prevIncome = 0;
+    let prevExpenses = 0;
+
+    transactions.forEach((tx) => {
+      if (!tx.date) return;
+      const txDate = new Date(tx.date);
+      if (txDate.getFullYear() === prevYear && txDate.getMonth() === prevMonthIdx) {
+        const amt = parseFloat(tx.amount) || 0;
+        if (tx.type === 'income') prevIncome += amt;
+        else if (tx.type === 'expense') prevExpenses += amt;
+      }
+    });
+
+    const expenseChangePct = prevExpenses > 0
+      ? Math.round(((expenses - prevExpenses) / prevExpenses) * 100)
+      : null;
+
+    const incomeChangePct = prevIncome > 0
+      ? Math.round(((income - prevIncome) / prevIncome) * 100)
+      : null;
+
     return {
       income,
       expenses,
       balance,
       categoryTotals,
+      prevIncome,
+      prevExpenses,
+      expenseChangePct,
+      incomeChangePct,
     };
-  }, [monthlyTransactions]);
+  }, [monthlyTransactions, transactions, currentDate]);
 
   const value = {
     transactions,

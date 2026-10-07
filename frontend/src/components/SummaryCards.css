@@ -85,6 +85,19 @@
   color: var(--color-muted);
 }
 
+.card-trend-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-secondary);
+  background-color: var(--color-border-subtle);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.01em;
+}
+
 @media (max-width: 900px) {
   .summary-cards-grid {
     grid-template-columns: 1fr;

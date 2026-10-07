@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 import { Header } from '../components/Header.jsx';
 import { ToastContainer } from '../components/ToastContainer.jsx';
@@ -10,20 +10,38 @@ export const AppLayout = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState(null);
 
-  const handleOpenAdd = () => {
+  const handleOpenAdd = useCallback(() => {
     setEditingTransaction(null);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const handleOpenEdit = (transaction) => {
+  const handleOpenEdit = useCallback((transaction) => {
     setEditingTransaction(transaction);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
     setEditingTransaction(null);
-  };
+  }, []);
+
+  // Global Keyboard Shortcut: 'N' or 'Cmd/Ctrl + K' opens Add Transaction
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+      const isInput = activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select';
+
+      if (!isInput) {
+        if (e.key === 'n' || e.key === 'N' || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')) {
+          e.preventDefault();
+          handleOpenAdd();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleOpenAdd]);
 
   return (
     <div className="app-shell">

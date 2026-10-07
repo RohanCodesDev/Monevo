@@ -1,12 +1,12 @@
 import React from 'react';
 import { useTransactions } from '../context/TransactionContext.jsx';
 import { formatCurrency } from '../utils/formatters.js';
-import { ArrowUpRight, ArrowDownRight, Wallet } from 'lucide-react';
+import { ArrowUpRight, ArrowDownRight, Wallet, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import './SummaryCards.css';
 
 export const SummaryCards = () => {
   const { metrics } = useTransactions();
-  const { balance, income, expenses } = metrics;
+  const { balance, income, expenses, expenseChangePct, incomeChangePct } = metrics;
 
   return (
     <div className="summary-cards-grid">
@@ -46,7 +46,28 @@ export const SummaryCards = () => {
           </h3>
         </div>
         <div className="card-footer">
-          <span className="card-subtext">Recorded incoming cash</span>
+          {incomeChangePct !== null ? (
+            <div className="card-trend-badge">
+              {incomeChangePct > 0 ? (
+                <>
+                  <TrendingUp size={12} />
+                  <span>+{incomeChangePct}% vs last month</span>
+                </>
+              ) : incomeChangePct < 0 ? (
+                <>
+                  <TrendingDown size={12} />
+                  <span>{incomeChangePct}% vs last month</span>
+                </>
+              ) : (
+                <>
+                  <Minus size={12} />
+                  <span>Equal to last month</span>
+                </>
+              )}
+            </div>
+          ) : (
+            <span className="card-subtext">Recorded incoming cash</span>
+          )}
         </div>
       </div>
 
@@ -64,7 +85,28 @@ export const SummaryCards = () => {
           </h3>
         </div>
         <div className="card-footer">
-          <span className="card-subtext">Recorded spending</span>
+          {expenseChangePct !== null ? (
+            <div className="card-trend-badge">
+              {expenseChangePct > 0 ? (
+                <>
+                  <TrendingUp size={12} />
+                  <span>+{expenseChangePct}% vs last month</span>
+                </>
+              ) : expenseChangePct < 0 ? (
+                <>
+                  <TrendingDown size={12} />
+                  <span>{expenseChangePct}% vs last month</span>
+                </>
+              ) : (
+                <>
+                  <Minus size={12} />
+                  <span>Equal to last month</span>
+                </>
+              )}
+            </div>
+          ) : (
+            <span className="card-subtext">Recorded spending</span>
+          )}
         </div>
       </div>
     </div>

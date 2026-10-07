@@ -6,18 +6,48 @@
 }
 
 .month-controls {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
+.current-month-display-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.current-month-display-btn:hover {
+  border-color: var(--color-charcoal);
+  background-color: var(--color-surface-hover);
+}
+
+.month-cal-icon {
+  color: var(--color-secondary);
+}
+
 .current-month-display {
-  font-size: 1.1875rem;
+  font-size: 1.0625rem;
   font-weight: 600;
   color: var(--color-charcoal);
-  min-width: 150px;
-  text-align: center;
   letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+
+.month-chevron {
+  color: var(--color-muted);
+  transition: transform var(--transition-fast);
+}
+
+.month-chevron.rotate {
+  transform: rotate(180deg);
 }
 
 .month-btn-nav {
@@ -63,4 +93,78 @@
   color: var(--color-bg);
   border-color: var(--color-charcoal);
   transform: translateY(-1px);
+}
+
+/* Month Popover Menu */
+.month-popover-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 40px;
+  z-index: 100;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  width: 220px;
+  box-shadow: var(--shadow-lg);
+  animation: fadeIn 0.15s ease-out;
+}
+
+.popover-year-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.popover-year-text {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--color-charcoal);
+}
+
+.btn-year-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  color: var(--color-secondary);
+  font-size: 1.1rem;
+  transition: all var(--transition-fast);
+}
+
+.btn-year-arrow:hover {
+  background-color: var(--color-bg);
+  color: var(--color-charcoal);
+}
+
+.popover-months-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.btn-month-cell {
+  padding: 6px 0;
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-secondary);
+  text-align: center;
+  transition: all var(--transition-fast);
+}
+
+.btn-month-cell:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--color-charcoal);
+}
+
+.btn-month-cell.selected {
+  background-color: var(--color-charcoal);
+  color: var(--color-bg);
+  font-weight: 600;
 }
