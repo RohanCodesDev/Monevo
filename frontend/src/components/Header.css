@@ -11,17 +11,18 @@
 .header-inner {
   max-width: 1200px;
   margin: 0 auto;
-  height: 68px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 16px;
 }
 
 .header-brand-group {
   display: flex;
   align-items: baseline;
-  gap: 14px;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .header-logo {
@@ -38,17 +39,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   background-color: var(--color-charcoal);
   color: var(--color-bg);
   border-radius: var(--radius-sm);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 700;
 }
 
 .logo-text {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   letter-spacing: 0.06em;
 }
 
@@ -64,13 +65,13 @@
   align-items: center;
   gap: 4px;
   background-color: var(--color-border-subtle);
-  padding: 4px;
+  padding: 3px;
   border-radius: var(--radius-full);
 }
 
 .nav-link {
-  padding: 6px 16px;
-  font-size: 0.875rem;
+  padding: 5px 14px;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--color-secondary);
   border-radius: var(--radius-full);
@@ -90,14 +91,15 @@
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
-/* Auth user badge / login button */
+/* User profile badge */
 .user-profile-badge {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   padding: 4px 10px;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -105,10 +107,10 @@
   font-size: 0.8125rem;
   font-weight: 500;
   color: var(--color-charcoal);
+  max-width: 130px;
 }
 
 .user-name-label {
-  max-width: 110px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -123,20 +125,22 @@
 }
 
 .btn-logout:hover {
-  color: var(--color-expense);
+  color: var(--color-charcoal);
 }
 
+/* Login button */
 .btn-login-open {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
+  padding: 6px 12px;
   background-color: var(--color-surface);
   color: var(--color-charcoal);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-full);
   font-size: 0.8125rem;
   font-weight: 500;
+  white-space: nowrap;
   transition: all var(--transition-fast);
 }
 
@@ -151,6 +155,7 @@
   justify-content: center;
   width: 32px;
   height: 32px;
+  flex-shrink: 0;
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border);
   background-color: var(--color-surface);
@@ -160,45 +165,27 @@
 
 .btn-theme-toggle:hover {
   border-color: var(--color-charcoal);
-  transform: translateY(-1px);
 }
 
 /* Sync indicator */
 .sync-indicator {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   font-size: 0.75rem;
   font-weight: 500;
-  padding: 4px 10px;
+  padding: 4px 9px;
   border-radius: var(--radius-full);
   border: 1px solid var(--color-border);
   background-color: var(--color-surface);
-}
-
-.sync-indicator.sync-synced {
-  color: var(--color-income);
-  border-color: rgba(42, 111, 78, 0.2);
-}
-
-.sync-indicator.sync-syncing {
-  color: var(--color-secondary);
-}
-
-.sync-indicator.sync-saved-locally {
-  color: var(--color-secondary);
-}
-
-.sync-indicator.sync-offline {
-  color: var(--color-warning);
-  border-color: rgba(176, 125, 43, 0.2);
+  white-space: nowrap;
 }
 
 .sync-dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background-color: var(--color-secondary);
+  background-color: var(--color-charcoal);
 }
 
 .spin {
@@ -210,48 +197,82 @@
   to { transform: rotate(360deg); }
 }
 
-/* Primary Add Button */
+/* Primary Add Button (desktop) */
 .btn-add-transaction {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background-color: var(--color-charcoal);
   color: var(--color-bg);
-  padding: 8px 16px;
+  padding: 7px 14px;
   border-radius: var(--radius-full);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
+  white-space: nowrap;
   transition: all var(--transition-fast);
-  box-shadow: var(--shadow-sm);
 }
 
 .btn-add-transaction:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  opacity: 0.88;
 }
 
-.btn-add-transaction:active {
-  transform: translateY(0);
-}
-
-@media (max-width: 768px) {
+/* Tablet & Mobile Responsiveness */
+@media (max-width: 860px) {
   .logo-tagline {
     display: none;
   }
-  .sync-label {
-    display: none;
-  }
-  .sync-indicator {
-    padding: 4px 6px;
-  }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .app-header {
     padding: 0 16px;
   }
+
+  .header-inner {
+    height: 56px;
+    gap: 8px;
+  }
+
   .header-nav {
+    display: none; /* Managed by bottom navigation */
+  }
+
+  /* On mobile, hide the desktop add button since the bottom floating action bar handles it */
+  .btn-add-transaction {
+    display: none;
+  }
+
+  /* Keep status compact */
+  .sync-label {
+    display: none;
+  }
+
+  .sync-indicator {
+    padding: 6px;
+  }
+
+  .btn-login-open {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+  }
+
+  .btn-login-open span {
+    display: inline;
+  }
+
+  .header-actions {
+    gap: 6px;
+  }
+
+  .user-profile-badge {
+    max-width: 90px;
+    padding: 3px 8px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .sync-indicator {
     display: none;
   }
 }
