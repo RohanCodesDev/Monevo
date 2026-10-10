@@ -22,14 +22,18 @@ app.use(express.json());
 // Attach auth token middleware globally
 app.use(authenticateToken);
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
+// Health check endpoints
+const healthCheck = (req, res) => {
   res.json({
     status: 'online',
     timestamp: new Date().toISOString(),
     service: 'Monevo API',
   });
-});
+};
+
+app.get('/', healthCheck);
+app.get('/health', healthCheck);
+app.get('/api/health', healthCheck);
 
 // API Routes
 app.use('/api/auth', authRoutes);
