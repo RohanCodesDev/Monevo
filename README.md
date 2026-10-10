@@ -206,6 +206,23 @@ The test suite validates:
 
 ---
 
+## ✦ Deployment
+
+Monevo is optimized for 1-click deployment on **Vercel** with zero-configuration required. The repository is structured as a monorepo that automatically hosts the frontend as a static site and the Express backend as a Serverless Function.
+
+### Deploying to Vercel
+1. Fork or clone this repository to your GitHub account.
+2. Sign in to [Vercel](https://vercel.com/) and create a **New Project**.
+3. Import your Monevo repository.
+4. Set the following **Environment Variables** in the Vercel dashboard:
+   - `DATABASE_URL`: Your Neon PostgreSQL connection string.
+   - `JWT_SECRET`: A secure random string for authentication.
+5. Click **Deploy**.
+
+Vercel will automatically detect the configuration in `vercel.json` and deploy both your frontend and API.
+
+---
+
 ## ✦ License
 
 This project is licensed under the MIT License.
